@@ -1,6 +1,7 @@
 import compression from "compression";
 import cors from "cors";
 import express from "express";
+import { userRouter } from "./modules/user/user.routes";
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use(
   })
 );
 
-// app.use("/api/v1/user", userRouter);
+app.use("/api/user", userRouter);
 // Default route for testing
 app.get("/", (_req, res) => {
   res.send("Portfolio Api is Running");
