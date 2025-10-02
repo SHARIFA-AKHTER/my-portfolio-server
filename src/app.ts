@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { userRouter } from "./modules/user/user.routes";
 import { AuthRoute } from "./modules/auth/auth.route";
+import { BlogRoute } from "./modules/blog/blog.route";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", AuthRoute);
+app.use("/api/blog", BlogRoute);
 // Default route for testing
 app.get("/", (_req, res) => {
   res.send("Portfolio Api is Running");
