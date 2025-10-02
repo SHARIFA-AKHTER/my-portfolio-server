@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "commonjs",
   "dependencies": {
-    "@prisma/client": "^6.16.2",
+    "@prisma/client": "^6.16.3",
     "accepts": "^2.0.0",
     "acorn": "^8.15.0",
     "acorn-walk": "^8.3.4",
@@ -188,7 +188,7 @@
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.5.2",
-    "prisma": "^6.16.2",
+    "prisma": "^6.16.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2"
   }
