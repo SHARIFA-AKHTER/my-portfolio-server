@@ -1,12 +1,32 @@
 import { Request, Response } from "express";
 import { BlogService } from "./blog.service";
+import prisma from "../../config/db";
 
 const createBlog = async (req: Request, res: Response) => {
   try {
-    const result = await BlogService.createBlog(req.body);
-    res.status(201).json(result);
+    const { title, slug, content, excerpt, coverUrl, authorId } = req.body;
+
+    const blog = await prisma.blog.create({
+      data: {
+        title,
+        slug,
+        content,
+        excerpt,
+        coverUrl,
+        authorId,
+      },
+    });
+
+    res.json({
+      success: true,
+      message: "Blog created successfully",
+      blog,
+    });
   } catch (error: any) {
-    res.status(400).json({ success: false, message: error.message });
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -31,11 +51,19 @@ const getBlogById = async (req: Request, res: Response) => {
 
 const updateBlog = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id);
-    const result = await BlogService.updateBlog(id, req.body);
-    res.status(200).json(result);
+    const id = Number(req.params.id);
+    const blog = await BlogService.updateBlog(id, req.body);
+
+    res.json({
+      success: true,
+      message: "Blog updated successfully",
+      blog,
+    });
   } catch (error: any) {
-    res.status(400).json({ success: false, message: error.message });
+    res.status(404).json({
+      success: false,
+      message: error.message || "Blog not found",
+    });
   }
 };
 

@@ -38,12 +38,16 @@ const getBlogById = async (id: number) => {
 };
 
 const updateBlog = async (id: number, payload: Partial<BlogPayload>) => {
+  const existingBlog = await prisma.blog.findUnique({ where: { id } });
+  if (!existingBlog) {
+    throw new Error("Blog not found");
+  }
+
   return await prisma.blog.update({
     where: { id },
     data: payload,
   });
 };
-
 const deleteBlog = async (id: number) => {
   return await prisma.blog.delete({
     where: { id },
