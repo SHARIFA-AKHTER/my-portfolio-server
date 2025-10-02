@@ -1,11 +1,37 @@
 import { Prisma, User } from "@prisma/client";
 import prisma from "../../config/db";
+import bcrypt from "bcrypt";
+// const createUser = async (payload: Prisma.UserCreateInput): Promise<User> => {
+//   const createdUser = await prisma.user.create({
+//     data: payload,
+//   });
+//   return createdUser;
+// };
 
+// interface RegisterInput {
+//   name: string;
+//   email: string;
+//   password: string;
+//   phone: string;
+// }
 const createUser = async (payload: Prisma.UserCreateInput): Promise<User> => {
-  const createdUser = await prisma.user.create({
-    data: payload,
+  const existingUser = await prisma.user.findUnique({
+    where: { email: payload.email },
   });
-  return createdUser;
+  if (existingUser) {
+    throw new Error("Email already registered");
+  }
+  const hashedPassword = await bcrypt.hash(payload.password, 10);
+
+  return prisma.user.create({
+    data: {
+      name: payload.name,
+      email: payload.email,
+      password: hashedPassword,
+      phone: payload.phone,
+      role: "USER",
+    },
+  });
 };
 const getAllUsers = async () => {
   const result = await prisma.user.findMany({

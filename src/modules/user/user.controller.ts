@@ -10,7 +10,7 @@ const createUser = async (req: Request, res: Response) => {
       data: user,
     });
   } catch (error: any) {
-    res.status(400).json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -87,5 +87,5 @@ export const UserController = {
   getAllUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
 };

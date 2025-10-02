@@ -1,51 +1,88 @@
-import prisma from "../../config/db";
-import { comparePassword, hashPassword } from "../../utils/bcrypt";
 import { signToken } from "../../utils/jwt";
-import { IAuthPayload } from "./auth.interface";
+import { comparePassword, hashPassword } from "../../utils/bcrypt";
+import prisma from "../../config/db";
 
-
-import bcrypt from "bcrypt";
-import {  User } from "@prisma/client";
-
-interface RegisterInput {
-  name: string;
+interface LoginPayload {
   email: string;
   password: string;
-  phone: string;
 }
 
-export const register = async (payload: RegisterInput): Promise<User> => {
-  const hashedPassword = await bcrypt.hash(payload.password, 10);
+interface GooglePayload {
+  idToken: string;
+}
 
-  return prisma.user.create({
-    data: {
-      name: payload.name,
-      email: payload.email,
-      password: hashedPassword,
-      phone: payload.phone,
-      role: "USER",
-    },
+const loginWithEmailAndPassword = async (payload: LoginPayload) => {
+  const { email, password } = payload;
+
+  const user = await prisma.user.findUnique({
+    where: { email },
   });
-};
 
-const login = async ({ email, password }: IAuthPayload) => {
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || !user.password) {
-    throw new Error("Invalid credentials");
+  if (!user) {
+    throw new Error("User not found!");
   }
 
-  const isMatch = await comparePassword(password, user.password); // ✅ এখন string type
+  // password check
+  const isMatch = await comparePassword(password, user.password);
   if (!isMatch) {
-    throw new Error("Invalid credentials");
+    throw new Error("Invalid credentials!");
   }
 
-  const token = signToken({ id: user.id, email: user.email, role: user.role });
+  const token = signToken({ id: user.id, email: user.email }, "1d");
 
-  return { token, user };
+  return {
+    success: true,
+    message: "Login successful",
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    },
+  };
 };
 
+// Google Auth (Basic)
+const authWithGoogle = async (payload: GooglePayload) => {
+  const { idToken } = payload;
+
+  if (!idToken) {
+    throw new Error("Google idToken required!");
+  }
+
+  const googleEmail = "googleuser@example.com";
+  const googleName = "Google User";
+
+  // check user exists
+  let user = await prisma.user.findUnique({
+    where: { email: googleEmail },
+  });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        email: googleEmail,
+        name: googleName,
+        password: await hashPassword("google-auth"),
+      },
+    });
+  }
+
+  const token = signToken({ id: user.id, email: user.email }, "1d");
+
+  return {
+    success: true,
+    message: "Google auth successful",
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    },
+  };
+};
 
 export const AuthService = {
-  register,
-  login,
+  loginWithEmailAndPassword,
+  authWithGoogle,
 };
