@@ -23,12 +23,16 @@ const loginWithEmailAndPassword = async (payload: LoginPayload) => {
   }
 
   // password check
-  const isMatch = await comparePassword(password, user.password);
+  const isMatch = await comparePassword(password, user.password || "");
   if (!isMatch) {
     throw new Error("Invalid credentials!");
   }
 
-  const token = signToken({ id: user.id, email: user.email }, "1d");
+  // JWT token generate with role
+  const token = signToken(
+    { id: user.id, email: user.email, role: user.role },
+    "1d"
+  );
 
   return {
     success: true,
@@ -38,6 +42,7 @@ const loginWithEmailAndPassword = async (payload: LoginPayload) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
     },
   };
 };

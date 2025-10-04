@@ -1,12 +1,22 @@
 import express from "express";
 import { BlogController } from "./blog.controller";
+import authMiddleware from "../../middleware/auth";
+import { adminMiddleware } from "../../middleware/adminMiddleware";
 
 const router = express.Router();
 
-router.post("/", BlogController.createBlog); // Create
-router.get("/", BlogController.getAllBlogs); // Get all
-router.get("/:id", BlogController.getBlogById); // Get one
-router.put("/:id", BlogController.updateBlog); // Update
-router.delete("/:id", BlogController.deleteBlog); // Delete
+//public
+router.get("/", BlogController.getAllBlogs);
+router.get("/:id", BlogController.getBlogById);
+
+//admin
+router.post("/", authMiddleware, adminMiddleware, BlogController.createBlog);
+router.put("/:id", authMiddleware, adminMiddleware, BlogController.updateBlog);
+router.delete(
+  "/:id",
+  authMiddleware,
+  adminMiddleware,
+  BlogController.deleteBlog
+);
 
 export const BlogRoute = router;
