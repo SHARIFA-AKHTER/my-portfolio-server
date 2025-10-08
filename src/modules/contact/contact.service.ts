@@ -11,3 +11,9 @@ export const createContact = async (payload: any) => {
   });
   return contact;
 };
+
+export const getAllContactsService = async () => {
+  return await prisma.contact.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+};

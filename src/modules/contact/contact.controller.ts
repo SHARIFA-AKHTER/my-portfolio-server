@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createContact } from "./contact.service";
+import { createContact, getAllContactsService } from "./contact.service";
 
 export const handleContactMessage = async (req: Request, res: Response) => {
   try {
@@ -25,5 +25,17 @@ export const handleContactMessage = async (req: Request, res: Response) => {
       success: false,
       message: "Internal server error ❌",
     });
+  }
+};
+
+export const getAllContacts = async (req: Request, res: Response) => {
+  try {
+    const contacts = await getAllContactsService();
+    res.status(200).json({
+      success: true,
+      data: contacts,
+    });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
   }
 };
