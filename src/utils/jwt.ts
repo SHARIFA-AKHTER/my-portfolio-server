@@ -4,7 +4,7 @@ const JWT_SECRET: Secret = process.env.JWT_SECRET || "supersecret";
 
 export const signToken = (
   payload: object,
-  expiresIn: string | number = "1h"
+  expiresIn: string | number = "7d"
 ): string => {
   const options: SignOptions = { expiresIn: expiresIn as any };
   return jwt.sign(payload, JWT_SECRET, options);

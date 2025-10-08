@@ -23,6 +23,7 @@ const createBlog = async (payload: BlogPayload) => {
     },
   });
 };
+
 const getAllBlogs = async () => {
   return await prisma.blog.findMany({
     include: { author: { select: { id: true, name: true, email: true } } },

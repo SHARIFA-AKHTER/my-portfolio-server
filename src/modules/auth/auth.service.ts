@@ -69,6 +69,7 @@ const authWithGoogle = async (payload: GooglePayload) => {
         email: googleEmail,
         name: googleName,
         password: await hashPassword("google-auth"),
+        phone: "01315909090",
       },
     });
   }

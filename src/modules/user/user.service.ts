@@ -14,14 +14,17 @@ import bcrypt from "bcrypt";
 //   password: string;
 //   phone: string;
 // }
+
 const createUser = async (payload: Prisma.UserCreateInput): Promise<User> => {
   const existingUser = await prisma.user.findUnique({
     where: { email: payload.email },
   });
+
   if (existingUser) {
     throw new Error("Email already registered");
   }
-  const hashedPassword = await bcrypt.hash(payload.password, 10);
+
+  const hashedPassword = await bcrypt.hash(payload.password!, 10);
 
   return prisma.user.create({
     data: {
