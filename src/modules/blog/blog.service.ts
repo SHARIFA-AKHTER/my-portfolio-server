@@ -64,10 +64,37 @@ const deleteBlog = async (id: number) => {
     where: { id },
   });
 };
+
+const increaseView = async (id: number) => {
+  const blog = await prisma.blog.findUnique({ where: { id } });
+  if (!blog) throw new Error("Blog not found");
+
+  const updatedBlog = await prisma.blog.update({
+    where: { id },
+    data: {
+      views: { increment: 1 },
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          picture: true,
+          isVerified: true,
+        },
+      },
+    },
+  });
+
+  return updatedBlog;
+};
+
 export const BlogService = {
   createBlog,
   getAllBlogs,
   getBlogById,
   updateBlog,
   deleteBlog,
+  increaseView,
 };

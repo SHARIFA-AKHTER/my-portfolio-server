@@ -13,10 +13,10 @@ const project_route_1 = require("./modules/project/project.route");
 const contact_route_1 = require("./modules/contact/contact.route");
 const app = (0, express_1.default)();
 // Middleware
-app.use((0, cors_1.default)());
-app.use((0, compression_1.default)());
 app.use(express_1.default.json());
+app.use((0, compression_1.default)());
 app.use((0, cors_1.default)({
+    // origin: "http://localhost:3000",
     origin: "https://my-portfolio-client-umber.vercel.app",
     credentials: true,
 }));

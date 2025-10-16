@@ -76,6 +76,23 @@ const deleteBlog = async (req: Request, res: Response) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+const increaseView = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    const blog = await BlogService.increaseView(id);
+
+    res.status(200).json({
+      success: true,
+      message: "View count increased successfully",
+      data: blog,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 export const BlogController = {
   createBlog,
@@ -83,4 +100,5 @@ export const BlogController = {
   getBlogById,
   updateBlog,
   deleteBlog,
+  increaseView,
 };

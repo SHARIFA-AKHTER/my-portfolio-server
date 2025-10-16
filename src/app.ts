@@ -10,13 +10,14 @@ import { ContactRoutes } from "./modules/contact/contact.route";
 const app = express();
 
 // Middleware
-app.use(cors());
-app.use(compression());
 app.use(express.json());
+app.use(compression());
 
 app.use(
   cors({
-    origin: "https://my-portfolio-client-umber.vercel.app",
+    origin: "http://localhost:3000",
+
+    // origin: "https://my-portfolio-client-uce9.onrender.com",
 
     credentials: true,
   })

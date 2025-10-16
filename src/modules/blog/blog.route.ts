@@ -18,5 +18,5 @@ router.delete(
   adminMiddleware,
   BlogController.deleteBlog
 );
-
+router.patch("/:id/view", BlogController.increaseView);
 export const BlogRoute = router;
