@@ -78,11 +78,29 @@ const deleteBlog = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+const increaseView = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const blog = await blog_service_1.BlogService.increaseView(id);
+        res.status(200).json({
+            success: true,
+            message: "View count increased successfully",
+            data: blog,
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
 exports.BlogController = {
     createBlog,
     getAllBlogs,
     getBlogById,
     updateBlog,
     deleteBlog,
+    increaseView,
 };
 //# sourceMappingURL=blog.controller.js.map

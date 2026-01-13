@@ -56,11 +56,35 @@ const deleteBlog = async (id) => {
         where: { id },
     });
 };
+const increaseView = async (id) => {
+    const blog = await db_1.default.blog.findUnique({ where: { id } });
+    if (!blog)
+        throw new Error("Blog not found");
+    const updatedBlog = await db_1.default.blog.update({
+        where: { id },
+        data: {
+            views: { increment: 1 },
+        },
+        include: {
+            author: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    picture: true,
+                    isVerified: true,
+                },
+            },
+        },
+    });
+    return updatedBlog;
+};
 exports.BlogService = {
     createBlog,
     getAllBlogs,
     getBlogById,
     updateBlog,
     deleteBlog,
+    increaseView,
 };
 //# sourceMappingURL=blog.service.js.map

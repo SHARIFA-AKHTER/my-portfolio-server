@@ -16,5 +16,6 @@ router.get("/:id", blog_controller_1.BlogController.getBlogById);
 router.post("/", auth_1.default, adminMiddleware_1.adminMiddleware, blog_controller_1.BlogController.createBlog);
 router.put("/:id", auth_1.default, adminMiddleware_1.adminMiddleware, blog_controller_1.BlogController.updateBlog);
 router.delete("/:id", auth_1.default, adminMiddleware_1.adminMiddleware, blog_controller_1.BlogController.deleteBlog);
+router.patch("/:id/view", blog_controller_1.BlogController.increaseView);
 exports.BlogRoute = router;
 //# sourceMappingURL=blog.route.js.map
