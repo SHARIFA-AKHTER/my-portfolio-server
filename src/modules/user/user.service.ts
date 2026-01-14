@@ -32,7 +32,7 @@ const createUser = async (payload: Prisma.UserCreateInput): Promise<User> => {
       email: payload.email,
       password: hashedPassword,
       phone: payload.phone,
-      role: "USER",
+      role: payload.role || "USER",
     },
   });
 };
