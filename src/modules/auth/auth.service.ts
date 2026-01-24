@@ -48,46 +48,6 @@ const loginWithEmailAndPassword = async (payload: LoginPayload) => {
   };
 };
 
-// Google Auth (Basic)
-// const authWithGoogle = async (payload: GooglePayload) => {
-//   const { idToken } = payload;
-
-//   if (!idToken) {
-//     throw new Error("Google idToken required!");
-//   }
-
-//   const googleEmail = "googleuser@example.com";
-//   const googleName = "Google User";
-
-//   // check user exists
-//   let user = await prisma.user.findUnique({
-//     where: { email: googleEmail },
-//   });
-
-//   if (!user) {
-//     user = await prisma.user.create({
-//       data: {
-//         email: googleEmail,
-//         name: googleName,
-//         password: await hashPassword("google-auth"),
-//         phone: "01315909090",
-//       },
-//     });
-//   }
-
-//   const token = signToken({ id: user.id, email: user.email }, "1d");
-
-//   return {
-//     success: true,
-//     message: "Google auth successful",
-//     token,
-//     user: {
-//       id: user.id,
-//       name: user.name,
-//       email: user.email,
-//     },
-//   };
-// };
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -135,7 +95,61 @@ export const authWithGoogle = async (payload: any) => {
   };
 };
 
+export const authWithFacebook = async (payload: any) => {
+  const { accessToken } = payload; 
+
+  if (!accessToken) throw new Error("Facebook access token missing");
+
+
+  const fbResponse = await fetch(
+    `https://graph.facebook.com/me?fields=id,name,email,picture.type(large)&access_token=${accessToken}`
+  );
+  
+  const fbData = await fbResponse.json();
+
+  if (fbData.error) {
+    throw new Error(fbData.error.message || "Invalid Facebook token");
+  }
+
+  const email = fbData.email;
+  const name = fbData.name || "Facebook User";
+  const picture = fbData.picture?.data?.url || null;
+
+  if (!email) {
+    throw new Error("Email not found in Facebook account. Please ensure your Facebook email is public.");
+  }
+
+  let user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        email,
+        name,
+        avatar: picture,
+        password: "facebook-auth",
+        role: "USER" 
+      },
+    });
+  }
+
+  const jwt = signToken({ id: user.id, email: user.email, role: user.role }, "7d");
+
+  return {
+    success: true,
+    token: jwt,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  };
+};
+
+
 export const AuthService = {
   loginWithEmailAndPassword,
   authWithGoogle,
+  authWithFacebook,
 };

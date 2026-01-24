@@ -6,5 +6,7 @@ const router = express.Router();
 router.post("/login", AuthController.loginWithEmailAndPassword);
 // Google login
 router.post("/google-login", AuthController.authWithGoogle);
+//facebook login
+router.post("/facebook-login", AuthController.authWithFacebook);
 
 export const AuthRoute = router;
