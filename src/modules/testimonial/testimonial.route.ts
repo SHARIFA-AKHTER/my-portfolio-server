@@ -7,5 +7,6 @@ router.get("/", TestimonialController.getTestimonials);
 
 
 router.post("/add", TestimonialController.addTestimonial);
+router.delete("/:id", TestimonialController.deleteTestimonial);
 
 export const testimonialRoutes = router;

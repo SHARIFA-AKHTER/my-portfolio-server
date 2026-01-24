@@ -42,7 +42,16 @@ const addTestimonial = async (req: Request, res: Response) => {
   }
 };
 
+const deleteTestimonial = async (req: Request, res: Response) => {
+  try {
+    await TestimonialService.deleteTestimonial(req.params.id);
+    res.status(200).json({ success: true, message: "Deleted successfully" });
+  } catch (error: any) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
 export const TestimonialController = {
   getTestimonials,
   addTestimonial,
+  deleteTestimonial
 };
