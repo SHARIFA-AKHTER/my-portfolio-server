@@ -20,4 +20,20 @@ const addFaq = async (req: Request, res: Response) => {
   }
 };
 
-export const FaqController = { getFaqs, addFaq };
+const deleteFaq = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await FaqService.deleteFaqFromDB(id);
+    res.status(200).json({
+      success: true,
+      message: "FAQ deleted successfully"
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || "Failed to delete FAQ"
+    });
+  }
+};
+
+export const FaqController = { getFaqs, addFaq,deleteFaq  };

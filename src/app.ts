@@ -8,6 +8,8 @@ import { ProjectRoute } from "./modules/project/project.route";
 import { ContactRoutes } from "./modules/contact/contact.route";
 import { testimonialRoutes } from "./modules/testimonial/testimonial.route";
 import { FaqRoutes } from "./modules/faq/faq.route";
+import { NewsletterRoutes } from "./modules/newsletter/newsletter.route";
+import { AnalyticsRoutes } from "./modules/analytics/analytics.route";
 
 const app = express();
 
@@ -32,6 +34,8 @@ app.use("/api/projects", ProjectRoute);
 app.use("/api/contacts", ContactRoutes);
 app.use("/api/testimonials", testimonialRoutes);
 app.use("/api/faqs",FaqRoutes );
+app.use("/api/newsletter",NewsletterRoutes);
+app.use("/api/analytics", AnalyticsRoutes);
 // Default route for testing
 app.get("/", (_req, res) => {
   res.send("Portfolio Api is Running");

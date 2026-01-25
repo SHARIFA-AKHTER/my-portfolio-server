@@ -17,4 +17,10 @@ const getAllFaqs = async () => {
   });
 };
 
-export const FaqService = { createFaq, getAllFaqs };
+const deleteFaqFromDB = async (id: string) => {
+  return await prisma.faq.delete({
+    where: { id }
+  });
+};
+
+export const FaqService = { createFaq, getAllFaqs,deleteFaqFromDB };
