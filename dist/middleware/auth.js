@@ -1,6 +1,4 @@
 "use strict";
-// import { Request, Response, NextFunction } from "express";
-// import { verifyToken } from "../utils/jwt";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };

@@ -20,8 +20,18 @@ const authWithGoogle = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+const authWithFacebook = async (req, res) => {
+    try {
+        const result = await auth_service_1.AuthService.authWithFacebook(req.body);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
 exports.AuthController = {
     loginWithEmailAndPassword,
     authWithGoogle,
+    authWithFacebook,
 };
 //# sourceMappingURL=auth.controller.js.map

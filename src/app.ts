@@ -19,9 +19,9 @@ app.use(compression());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
 
-    // origin: "https://my-portfolio-client-umber.vercel.app",
+    origin: "https://my-portfolio-client-umber.vercel.app",
 
     credentials: true,
   })

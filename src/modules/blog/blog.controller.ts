@@ -39,16 +39,35 @@ const getAllBlogs = async (req: Request, res: Response) => {
   }
 };
 
+// const getBlogById = async (req: Request, res: Response) => {
+//   try {
+//     const id = parseInt(req.params.id);
+//     const result = await BlogService.getBlogById(id);
+//     res.status(200).json(result);
+//   } catch (error: any) {
+//     res.status(404).json({ success: false, message: error.message });
+//   }
+// };
+
 const getBlogById = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id);
-    const result = await BlogService.getBlogById(id);
+    const { id } = req.params;
+    const blogId = parseInt(id);
+    if (isNaN(blogId)) {
+      return res.status(400).json({ success: false, message: "ID must be a number" });
+    }
+
+    const result = await BlogService.getBlogById(blogId);
+   
+    if (!result) {
+      return res.status(404).json({ success: false, message: "Blog not found" });
+    }
+
     res.status(200).json(result);
   } catch (error: any) {
-    res.status(404).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
 const updateBlog = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);

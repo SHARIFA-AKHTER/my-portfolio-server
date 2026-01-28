@@ -80,7 +80,7 @@ export const authWithGoogle = async (payload: any) => {
       data: {
         email,
         name,
-        avatar: picture,
+      picture: picture,
         password: "google-auth",
       },
     });
@@ -126,7 +126,7 @@ export const authWithFacebook = async (payload: any) => {
       data: {
         email,
         name,
-        avatar: picture,
+        picture: picture,
         password: "facebook-auth",
         role: "USER" 
       },

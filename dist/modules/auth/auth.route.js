@@ -11,5 +11,7 @@ const router = express_1.default.Router();
 router.post("/login", auth_controller_1.AuthController.loginWithEmailAndPassword);
 // Google login
 router.post("/google-login", auth_controller_1.AuthController.authWithGoogle);
+//facebook login
+router.post("/facebook-login", auth_controller_1.AuthController.authWithFacebook);
 exports.AuthRoute = router;
 //# sourceMappingURL=auth.route.js.map

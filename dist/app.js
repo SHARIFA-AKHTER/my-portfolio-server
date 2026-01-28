@@ -11,6 +11,10 @@ const auth_route_1 = require("./modules/auth/auth.route");
 const blog_route_1 = require("./modules/blog/blog.route");
 const project_route_1 = require("./modules/project/project.route");
 const contact_route_1 = require("./modules/contact/contact.route");
+const testimonial_route_1 = require("./modules/testimonial/testimonial.route");
+const faq_route_1 = require("./modules/faq/faq.route");
+const newsletter_route_1 = require("./modules/newsletter/newsletter.route");
+const analytics_route_1 = require("./modules/analytics/analytics.route");
 const app = (0, express_1.default)();
 // Middleware
 app.use(express_1.default.json());
@@ -25,6 +29,10 @@ app.use("/api/auth", auth_route_1.AuthRoute);
 app.use("/api/blog", blog_route_1.BlogRoute);
 app.use("/api/projects", project_route_1.ProjectRoute);
 app.use("/api/contacts", contact_route_1.ContactRoutes);
+app.use("/api/testimonials", testimonial_route_1.testimonialRoutes);
+app.use("/api/faqs", faq_route_1.FaqRoutes);
+app.use("/api/newsletter", newsletter_route_1.NewsletterRoutes);
+app.use("/api/analytics", analytics_route_1.AnalyticsRoutes);
 // Default route for testing
 app.get("/", (_req, res) => {
     res.send("Portfolio Api is Running");
