@@ -23,9 +23,25 @@ const getProjectById = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const result = await ProjectService.getProjectById(id);
-    res.status(200).json(result);
+
+    if (!result) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Project not found!" 
+      });
+    }
+
+  
+    res.status(200).json({
+      success: true,
+      data: result
+    });
+    
   } catch (error: any) {
-    res.status(404).json({ success: false, message: error.message });
+    res.status(500).json({ 
+      success: false, 
+      message: error.message 
+    });
   }
 };
 

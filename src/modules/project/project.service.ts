@@ -48,10 +48,20 @@ const getAllProjects = async () => {
 };
 
 const getProjectById = async (id: number) => {
-  return await prisma.project.findUnique({
+  const project = await prisma.project.findUnique({
     where: { id },
-    include: { author: { select: { id: true, name: true, email: true } } },
+    include: { 
+      author: { 
+        select: { id: true, name: true, email: true } 
+      } 
+    },
   });
+
+  if (!project) {
+    throw new Error(`Project with ID ${id} not found`);
+  }
+
+  return project;
 };
 
 const updateProject = async (id: number, payload: Partial<ProjectPayload>) => {
