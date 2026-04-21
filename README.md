@@ -118,10 +118,5 @@ get/api/contacts/ – Get all  Contacts (Owner Only)
 
 Backend Live URL: https://your-backend-link.com
 
-🧑‍💻 Admin Credentials (for testing)
-
-Email: sr0589071@gmail.com
-
-Password: 123456
 
 
